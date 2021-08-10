@@ -1,32 +1,21 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require("path")
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
+const glob = require("glob")
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    "bundle.js": glob.sync("build/static/?(js|css)/main.*.?(js|css)").map(f => path.resolve(__dirname, f)),
+  },
   output: {
-    path: path.resolve(__dirname, "./static/frontend"),
-    filename: "[name].js",
+    filename: "build/static/js/bundle.min.js",
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
-  optimization: {
-    minimize: true,
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("production"),
-      },
-    }),
-  ],
-};
+  plugins: [new UglifyJsPlugin()],
+}
