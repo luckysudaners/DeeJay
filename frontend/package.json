@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development --watch",
-    "build": "npm run build:react && npm run build:bundle", 
-    "build:react": "react-scripts build", 
-    "build:bundle": "webpack --config webpack.config.js"
+    "build": "webpack --mode production",
+    "start": "nodemon ./src/index.js"
   },
   "keywords": [],
   "author": "",
